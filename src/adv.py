@@ -4,7 +4,7 @@ from player import Player
 
 room = {
     'outside':  Room('outside', "Outside Cave Entrance",
-                     "North of you, the cave mouth beckons"),
+                     "North of you, the cave mouth beckons", ['dagger']),
 
     'foyer':    Room('foyer', "Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -53,10 +53,13 @@ player_one = Player('outside')
 
 
 def print_room():
-    print(room[player_one.curr_room].name+'\n')
+    print('='*40+'\n'+room[player_one.curr_room].name+'\n'+'='*40)
     # * Prints the current description (the textwrap module might be useful here).
     print(room[player_one.curr_room].description+'\n')
-    print('Exits are: '+room[player_one.curr_room].exits)
+    if len(room[player_one.curr_room].items):
+        for item in room[player_one.curr_room].items:
+            print(f'There is a {item} here')
+    print('Exits are: '+room[player_one.curr_room].exits+'\n')
 
 # Print Map
 
@@ -78,41 +81,57 @@ while True:
     # * Waits for user input and decides what to do.
     #
     uimp = input('Enter Command===>')
-
+    if uimp == '':
+        uimp = ['']
+    else:
+        uimp = uimp.split()
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
     #
     # If the user enters "q", quit the game.
+    commands = ['q: Quit', 'n,s,e,w: Move North/South/East/West',
+                'i: Inventory', 'Get: Pickup Item', 'Drop: Drop Item', '? or h: This list']
 
-    if uimp == 'q':
+    if uimp[0] == 'q':
         break
-    elif uimp == 'n':
+    elif uimp[0] == 'n':
         if hasattr(room[player_one.curr_room], 'n_to'):
             print("Moving North\n")
             player_one.curr_room = room[player_one.curr_room].n_to
             print_room()
         else:
             print("Can't move that way\n")
-    elif uimp == 's':
+    elif uimp[0] == 's':
         if hasattr(room[player_one.curr_room], 's_to'):
             print("Moving South\n")
             player_one.curr_room = room[player_one.curr_room].s_to
             print_room()
         else:
             print("Can't move that way\n")
-    elif uimp == 'w':
+    elif uimp[0] == 'w':
         if hasattr(room[player_one.curr_room], 'w_to'):
             print("Moving West\n")
             player_one.curr_room = room[player_one.curr_room].w_to
             print_room()
         else:
             print("Can't move that way\n")
-    elif uimp == 'e':
+    elif uimp[0] == 'e':
         if hasattr(room[player_one.curr_room], 'e_to'):
             print("Moving East\n")
             player_one.curr_room = room[player_one.curr_room].e_to
             print_room()
         else:
             print("Can't move that way\n")
+    elif uimp[0] == 'i':
+        print('You are currently carrying:')
+        if len(player_one.inventory):
+            for item in player_one.inventory:
+                print(item)
+        else:
+            print('Nothing')
+    elif uimp[0] == '?' or uimp[0] == 'h':
+        print('Available Commands')
+        for command in commands:
+            print(command)
     else:
         print("Sorry, I don't understand")

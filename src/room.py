@@ -5,7 +5,8 @@
 class Room:
     """Class to define rooms in the game"""
 
-    def __init__(self, id, name, description):
+    def __init__(self, id, name, description, items=[]):
         self.id = id
         self.name = name
         self.description = description
+        self.items = items
