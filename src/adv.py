@@ -1,8 +1,6 @@
 
 from room import Room
 from player import Player
-from print_room import print_room
-import actions
 # Declare all the rooms
 
 room = {
@@ -54,7 +52,7 @@ player_one = Player('Bob', room['outside'])
 commands = ['q: Quit', 'n,s,e,w: Move North/South/East/West',
             'i: Inventory', 'Get: Pickup Item', 'Drop: Drop Item', 'Push: Push Object', '? or h: This list']
 
-print_room(room, player_one)
+player_one.print_room()
 while True:
     # * Waits for user input and decides what to do.
     #
@@ -72,25 +70,13 @@ while True:
     if uimp[0] == 'q':
         break
     elif uimp[0] in moves:
-        destination = getattr(player_one.curr_room, uimp[0]+'_to', False)
-        if destination:
-            player_one.curr_room = room[destination]
-            if player_one.curr_room.id not in player_one.rooms_visited:
-                player_one.rooms_visited.append(player_one.curr_room.id)
-            print_room(room, player_one)
-        else:
-            print("Can't move that way, "+player_one.name+"\n")
+        player_one.move(uimp, room)
     elif uimp[0] == 'i':
-        print('You are currently carrying:')
-        if len(player_one.inventory):
-            for item in player_one.inventory:
-                print(item)
-        else:
-            print('Nothing')
+        player_one.get_inventory()
     elif uimp[0] == 'get':
-        actions.get_item(uimp, room, player_one)
+        player_one.get_item(uimp, room)
     elif uimp[0] == 'drop':
-        actions.drop_item(uimp, room, player_one)
+        player_one.drop_item(uimp, room)
     elif uimp[0] == '?' or uimp[0] == 'h':
         print('Available Commands')
         for command in commands:
