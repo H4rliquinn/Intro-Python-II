@@ -3,7 +3,8 @@
 
 
 class Player:
-    def __init__(self, curr_room):
+    def __init__(self, curr_room='outside'):
         self.curr_room = curr_room
+        self.rooms_visited = [curr_room]
     game_map = [['outside', None], [None, None, None]]
-    inventory = ['Blue Stone']
+    inventory = ['Blue stone']
