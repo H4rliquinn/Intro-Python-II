@@ -3,8 +3,8 @@
 
 
 class Player:
-    def __init__(self, name, curr_room='outside'):
+    def __init__(self, name, curr_room):
         self.name = name
         self.curr_room = curr_room
-        self.rooms_visited = [curr_room]
+        self.rooms_visited = [curr_room.id]
     inventory = ['Blue stone']

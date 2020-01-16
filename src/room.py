@@ -10,3 +10,10 @@ class Room:
         self.name = name
         self.description = description
         self.items = items
+
+    def get_exits(self):
+        exitstring = ''
+        for attr in vars(self):
+            if attr[-2:] == 'to':
+                exitstring += attr[0].upper()+', '
+        return exitstring
