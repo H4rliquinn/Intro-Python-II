@@ -72,9 +72,10 @@ while True:
     if uimp[0] == 'q':
         break
     elif uimp[0] in moves:
-        if hasattr(player_one.curr_room, 'n_to'):
-            player_one.curr_room = room[player_one.curr_room.n_to]
-            if player_one.curr_room not in player_one.rooms_visited:
+        destination = getattr(player_one.curr_room, uimp[0]+'_to', False)
+        if destination:
+            player_one.curr_room = room[destination]
+            if player_one.curr_room.id not in player_one.rooms_visited:
                 player_one.rooms_visited.append(player_one.curr_room.id)
             print_room(room, player_one)
         else:

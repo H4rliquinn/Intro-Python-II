@@ -22,7 +22,7 @@ def print_map(room, player_one):
 
 
 def print_room(rm, player_one, level):
-    if rm.id == player_one.curr_room:
+    if rm.id == player_one.curr_room.id:
         icon = '\u263A'
     else:
         icon = ' '
