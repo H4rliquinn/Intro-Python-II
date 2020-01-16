@@ -28,24 +28,29 @@ earlier adventurers. There appear to be some very small rocks floating in water 
 # Link rooms together
 room['outside'].n_to = 'foyer'
 room['outside'].exits = 'N'
+room['outside'].coord = (2, 0)
 room['foyer'].s_to = 'outside'
 room['foyer'].n_to = 'overlook'
 room['foyer'].e_to = 'narrow'
 room['foyer'].exits = 'N, S, and E'
+room['foyer'].coord = (1, 0)
 room['overlook'].s_to = 'foyer'
 room['overlook'].exits = 'S'
+room['overlook'].coord = (0, 0)
 room['narrow'].w_to = 'foyer'
 room['narrow'].n_to = 'treasure'
 room['narrow'].exits = 'N and W'
+room['narrow'].coord = (1, 1)
 room['treasure'].s_to = 'narrow'
 room['treasure'].exits = 'S'
+room['treasure'].coord = (0, 1)
 
 #
 # Main
 #
 # Make a new player object that is currently in the 'outside' room.
 
-player_one = Player()
+player_one = Player('Bob')
 # Write a loop that:
 #
 # * Prints the current room name
@@ -73,27 +78,35 @@ while True:
     elif uimp[0] == 'n':
         if hasattr(room[player_one.curr_room], 'n_to'):
             player_one.curr_room = room[player_one.curr_room].n_to
+            if player_one.curr_room not in player_one.rooms_visited:
+                player_one.rooms_visited.append(player_one.curr_room)
             print_room(room, player_one)
         else:
-            print("Can't move that way\n")
+            print("Can't move that way, "+player_one.name+"\n")
     elif uimp[0] == 's':
         if hasattr(room[player_one.curr_room], 's_to'):
             player_one.curr_room = room[player_one.curr_room].s_to
+            if player_one.curr_room not in player_one.rooms_visited:
+                player_one.rooms_visited.append(player_one.curr_room)
             print_room(room, player_one)
         else:
-            print("Can't move that way\n")
+            print("Can't move that way, "+player_one.name+"\n")
     elif uimp[0] == 'w':
         if hasattr(room[player_one.curr_room], 'w_to'):
             player_one.curr_room = room[player_one.curr_room].w_to
+            if player_one.curr_room not in player_one.rooms_visited:
+                player_one.rooms_visited.append(player_one.curr_room)
             print_room(room, player_one)
         else:
-            print("Can't move that way\n")
+            print("Can't move that way, "+player_one.name+"\n")
     elif uimp[0] == 'e':
         if hasattr(room[player_one.curr_room], 'e_to'):
             player_one.curr_room = room[player_one.curr_room].e_to
+            if player_one.curr_room not in player_one.rooms_visited:
+                player_one.rooms_visited.append(player_one.curr_room)
             print_room(room, player_one)
         else:
-            print("Can't move that way\n")
+            print("Can't move that way, "+player_one.name+"\n")
     elif uimp[0] == 'i':
         print('You are currently carrying:')
         if len(player_one.inventory):
