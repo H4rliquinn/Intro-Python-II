@@ -1,6 +1,7 @@
-
 from room import Room
 from player import Player
+from print_map import Map
+
 # Declare all the rooms
 
 room = {
@@ -38,6 +39,7 @@ room['narrow'].coord = (1, 1)
 room['treasure'].s_to = 'narrow'
 room['treasure'].coord = (0, 1)
 
+map = Map(room)
 #
 # Main
 #
@@ -49,10 +51,11 @@ player_one = Player('Bob', room['outside'])
 # * Prints the current room name
 
 
+moves = ['n', 's', 'w', 'e']
 commands = ['q: Quit', 'n,s,e,w: Move North/South/East/West',
             'i: Inventory', 'Get: Pickup Item', 'Drop: Drop Item', 'Push: Push Object', '? or h: This list']
 
-player_one.print_room()
+player_one.print_room(map)
 while True:
     # * Waits for user input and decides what to do.
     #
@@ -65,18 +68,17 @@ while True:
     # Print an error message if the movement isn't allowed.
     #
     # If the user enters "q", quit the game.
-    moves = ['n', 's', 'w', 'e']
 
     if uimp[0] == 'q':
         break
     elif uimp[0] in moves:
-        player_one.move(uimp, room)
+        player_one.move(uimp, map)
     elif uimp[0] == 'i':
         player_one.get_inventory()
     elif uimp[0] == 'get':
-        player_one.get_item(uimp, room)
+        player_one.get_item(uimp, map)
     elif uimp[0] == 'drop':
-        player_one.drop_item(uimp, room)
+        player_one.drop_item(uimp, map)
     elif uimp[0] == '?' or uimp[0] == 'h':
         print('Available Commands')
         for command in commands:
