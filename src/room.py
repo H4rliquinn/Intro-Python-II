@@ -24,14 +24,20 @@ class Room:
     def print_room(self, player_one, map):
         os.system('cls')
         print('='*60+'\n'+self.name+'\n'+'='*60)
-        # * Prints the current description (the textwrap module might be useful here).
-        tw = textwrap.wrap(self.description, width=60)
+        # * Prints the description and items
+        desc_string = self.description
+        # if len(self.items):
+        item_list = []
+        for item in self.items:
+            desc_string += item.description
+            item_list.append(item.id)
+        if len(item_list):
+            desc_string += 'Items: ['+']['.join(item_list)+']'
+
+        tw = textwrap.wrap(desc_string, width=60)
         for line in tw:
             print(line)
-        if len(self.items):
-            print('\n')
-            for item in self.items:
-                print(f'There is a {item} here')
+
         print('\n')
         print('Exits are: '+self.get_exits()[:-2]+'\n')
         map.print_map(player_one)

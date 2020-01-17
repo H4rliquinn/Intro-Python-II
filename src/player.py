@@ -7,7 +7,7 @@ class Player:
         self.name = name
         self.curr_room = curr_room
         self.rooms_visited = [curr_room.id]
-    inventory = ['Blue stone']
+    inventory = []
 
     def print_room(self, map):
         self.curr_room.print_room(self, map)
@@ -27,7 +27,7 @@ class Player:
         print('You are currently carrying:')
         if len(self.inventory):
             for item in self.inventory:
-                print(item)
+                print(item.name)
         else:
             print('Nothing')
 
@@ -37,12 +37,15 @@ class Player:
             print("Not sure what to get!")
         else:
             req_item = ' '.join(uimp[1:])
-            if req_item in self.curr_room.items:
-                self.inventory.append(req_item)
-                self.curr_room.items.remove(req_item)
-                self.print_room(map)
-            else:
-                print("That doesn't exit here!")
+            for x in self.curr_room.items:
+                if x.id == req_item:
+                    self.inventory.append(x)
+                    self.curr_room.items.remove(x)
+                    x.on_take()
+                    self.print_room(map)
+                    return True
+            print("That doesn't exist here!")
+            return False
 
     def drop_item(self, uimp, map):
         room = map.room
@@ -50,9 +53,12 @@ class Player:
             print("Not sure what to drop!")
         else:
             req_item = ' '.join(uimp[1:])
-            if req_item in self.inventory:
-                self.inventory.remove(req_item)
-                self.curr_room.items.append(req_item)
-                self.print_room(map)
-            else:
-                print("You don't have that!")
+            for x in self.inventory:
+                if x.id == req_item:
+                    self.inventory.remove(x)
+                    self.curr_room.items.append(x)
+                    x.on_drop()
+                    self.print_room(map)
+                    return True
+            print("You don't have that!")
+            return False
